@@ -31,16 +31,35 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    opacity: 0.8;
+    background: url('Nossa.jpg') no-repeat center center;
+    background-size: cover;
+    /* Optional: Add a slow zoom effect or keep it static. Keeping it simple first. */
+}
+
+.background-animation::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    /* Darker overlay to improve contrast */
+    z-index: 0;
 }
 
 @keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .glass {
@@ -71,7 +90,7 @@ h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
     color: #fff;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .subtitle {
@@ -112,13 +131,119 @@ h1 {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .btn-primary:hover {
     background: #fff;
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal and Notepad Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+}
+
+.notepad {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    height: 80vh;
+    background-color: #fcf5c7;
+    /* classic yellow notepad color */
+    background-image:
+        linear-gradient(#e1d9b0 1px, transparent 1px),
+        /* Horizontal lines */
+        linear-gradient(90deg, #ff9a9e 1px, transparent 1px);
+    /* Vertical margin line (optional) */
+    background-size: 100% 30px, 40px 100%;
+    /* Line height 30px, margin width 40px */
+    background-attachment: local;
+    border-radius: 5px;
+    padding: 0;
+    box-shadow:
+        0 1px 4px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(0, 0, 0, 0.1) inset;
+    transform: scale(0.8);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Notebook top binding effect (optional) */
+.notepad::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: #333;
+    /* Dark binding tape */
+    z-index: 2;
+}
+
+.modal.show .notepad {
+    transform: scale(1);
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    color: #fff;
+    /* White against dark binding */
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+    z-index: 10;
+}
+
+.close-btn:hover {
+    color: #ff6b81;
+}
+
+.notepad-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    font-family: 'Caveat', 'Shadows Into Light', cursive, sans-serif;
+    font-size: 1.5rem;
+    /* Match line height somewhat */
+    line-height: 30px;
+    /* IMPORTANT: Must match background-size line height */
+    padding: 30px 40px 20px 50px;
+    /* Top padding > binding, Left padding > margin line */
+    color: #2d3436;
+}
+
+.notepad-content h2 {
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 0px;
+    /* Let lineHeight handle spacing */
+    color: #d63031;
+    text-align: center;
+    line-height: 60px;
+    /* Spans 2 lines */
 }
 
 /* Animations */
@@ -128,10 +253,21 @@ h1 {
     animation: fadeInUp 0.8s ease forwards;
 }
 
-.delay-1 { animation-delay: 0.2s; }
-.delay-2 { animation-delay: 0.4s; }
-.delay-3 { animation-delay: 0.6s; }
-.delay-4 { animation-delay: 0.8s; }
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+}
+
+.delay-3 {
+    animation-delay: 0.6s;
+}
+
+.delay-4 {
+    animation-delay: 0.8s;
+}
 
 @keyframes fadeInUp {
     to {
@@ -153,6 +289,7 @@ h1 {
         transform: translateY(0) scale(1);
         opacity: 1;
     }
+
     100% {
         transform: translateY(-100vh) scale(1.5);
         opacity: 0;
